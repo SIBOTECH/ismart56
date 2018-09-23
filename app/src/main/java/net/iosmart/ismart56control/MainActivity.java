@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -78,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
                     dataList.clear();
                     adapterData.notifyDataSetInvalidated();
                     break;
+                case 4:
+
+                    break;
             }
         }
     };
@@ -107,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         listViewData.setAdapter(adapterData);
 
         startTimer();
+
 
     }
 
@@ -218,6 +223,8 @@ public class MainActivity extends AppCompatActivity {
                 result += " , Last Check in " + new SimpleDateFormat("HH:mm:ss").format(new Date());
                 dataList.add(result);
                 adapterData.notifyDataSetInvalidated();
+
+            //    sendMessage();
             }
 
         }
@@ -226,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
     private class ScanIpTask extends AsyncTask<String, String, Void> {
         //static final String subnet = "192.168.1.";
         static final int lower = 105;
-        static final int upper = 115;
+        static final int upper = 120;
         static final int timeout = 5000;
 
         @Override
@@ -275,6 +282,28 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+
+    private void sendMessage() {
+
+        Thread sender = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    GMailSender sender = new GMailSender("Your Gmail address", "Your Gmail Passwoed");
+                    sender.sendMail("Email From Ismart App",
+                            "Email content ",
+                            "Your Email address",
+                            "Send Email Address");
+                } catch (Exception e) {
+                    Log.i("mylog", "Error: " + e.getMessage());
+                }
+            }
+        });
+        sender.start();
+    }
+
+
 }
 
 
@@ -346,5 +375,7 @@ class IsmartData {
                 '}';
     }
 }
+
+
 
 
