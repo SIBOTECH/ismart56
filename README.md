@@ -3,4 +3,6 @@
 1. Broadcast monitors the WIFI status and gets the IP address of the tablet itself.
 2. Scan all active device IP address of the same LAN.
 3. Use http get to access the active IP address and get the ismart56's data.
-4. Set GPIO level or send mail after comparing data
+4. Set GPIO level or send mail after comparing data.
+![Q896S](http://www.iosmart.net/sites/default/files/ismart_app.png)
+![Ismart56](http://www.iosmart.net/sites/default/files/ismart56-2.png)
