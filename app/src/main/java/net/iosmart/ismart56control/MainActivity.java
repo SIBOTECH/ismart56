@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
                             "Your Email address",
                             "Send Email Address");
                 } catch (Exception e) {
-                    Log.i("mylog", "Error: " + e.getMessage());
+                    Log.i(TAG, "Error: " + e.getMessage());
                 }
             }
         });
