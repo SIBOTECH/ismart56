@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -46,6 +45,8 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Iosmart56-MainActivity";
+    private static final double TEMP_LIMT = 86.0;  //30 C
+
     private SmdtManager smdt;
     private boolean wifi_connected = false;
     private String subnet;
@@ -91,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         smdt = SmdtManager.create(this);
+        smdt.smdtSetGpioValue(1,false);  //off red led
+        smdt.smdtSetGpioValue(2,false);  //off green led
 
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
@@ -225,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
                 adapterData.notifyDataSetInvalidated();
 
             //    sendMessage();
+                displayLed(ismartData.getTemperature());
             }
 
         }
@@ -232,8 +236,8 @@ public class MainActivity extends AppCompatActivity {
 
     private class ScanIpTask extends AsyncTask<String, String, Void> {
         //static final String subnet = "192.168.1.";
-        static final int lower = 105;
-        static final int upper = 120;
+        static final int lower = 2;
+        static final int upper = 20;
         static final int timeout = 5000;
 
         @Override
@@ -301,6 +305,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         sender.start();
+    }
+
+    private void displayLed(String value) {
+        double temp = Double.parseDouble(value);
+        Log.i(TAG, "Temp: " + temp);
+        if(temp>TEMP_LIMT) {
+            smdt.smdtSetGpioValue(1, true);
+            smdt.smdtSetGpioValue(2, false);
+        }else{
+            smdt.smdtSetGpioValue(1, false);
+            smdt.smdtSetGpioValue(2, true);
+        }
     }
 
 
